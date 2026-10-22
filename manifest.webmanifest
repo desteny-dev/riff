@@ -1,0 +1,17 @@
+{
+  "name": "Riff – Gitarre nach Gefühl",
+  "short_name": "Riff",
+  "description": "Gitarre lernen nach Gefühl: mit Band, Mikrofon-Erkennung und 3D-Gitarre. Keine Noten.",
+  "lang": "de",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0a0f",
+  "theme_color": "#0b0a0f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
