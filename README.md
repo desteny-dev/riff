@@ -7,6 +7,7 @@ Gitarre lernen ohne Noten und ohne Lieder auswendig: **ein Ton im Kopf – und d
 - **Lernen:** ein Weg aus 6 Kapiteln mit klaren Zielen (Kapitel 1 „Der erste Ton" ist fertig)
 - **Üben:** jede Technik einzeln – Ton-Jagd, Echo, Summen & Finden, Hoch oder tief?
 - **Stimmen:** hört jeden Ton, Referenzton pro Saite, Eingang wählbar (Audio-Interface für E-Gitarre)
-- Für Akustik-, Konzert- und E-Gitarre · läuft im Browser, keine Anmeldung · am Handy installierbar
+- Für Akustik-, Konzert- und E-Gitarre · läuft im Browser, keine Anmeldung · am Handy installierbar, auch offline
+- Etwas verstimmte Gitarre? Die App gleicht aus und sagt es dir. Neue Fassungen laden sich von selbst.
 
 Klänge: FluidR3 GM von Frank Wen (CC BY 3.0) · Tonerkennung: pitchy (MIT) · 3D: three.js (MIT)
