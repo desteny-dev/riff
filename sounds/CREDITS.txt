@@ -1,0 +1,11 @@
+Gitarrenklänge in dieser App (steel.json, nylon.json, electric.json)
+
+Quelle:   Soundfont "FluidR3_GM" von Frank Wen (FluidR3 General MIDI Soundfont),
+          als MP3-Samples bereitgestellt vom Projekt "midi-js-soundfonts" (Benjamin Gleitzman).
+Töne:     acoustic_guitar_steel, acoustic_guitar_nylon, electric_guitar_clean
+          (jeder 2. Halbton von MIDI 40 bis 88, unverändert aus der Quelle übernommen)
+Lizenz:   Creative Commons Attribution 3.0 (CC BY 3.0) - kommerzielle Nutzung erlaubt,
+          Namensnennung nötig.
+          https://creativecommons.org/licenses/by/3.0/
+Link:     https://github.com/gleitz/midi-js-soundfonts
+          https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/
