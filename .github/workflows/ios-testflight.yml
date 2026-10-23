@@ -1,0 +1,63 @@
+# iOS-App aus der Web-App bauen und zu TestFlight hochladen – auf einem Mac in der Cloud (GitHub Actions).
+# Start: GitHub → Actions → „iOS → TestFlight" → Run workflow. Braucht 3 Geheimnisse im Repo (Settings → Secrets → Actions):
+#   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (Inhalt der .p8-Datei des App-Store-Connect-API-Schlüssels, Rolle Admin)
+name: iOS → TestFlight
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version, die Nutzer sehen (z. B. 1.0)
+        default: '1.0'
+env:
+  TEAM_ID: __TEAM_ID__
+jobs:
+  testflight:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Web-App für die App sammeln
+        run: |
+          mkdir -p www
+          cp index.html manifest.webmanifest icon-192.png icon-512.png apple-touch-icon.png www/
+          cp -R sounds www/
+      - name: iOS-Projekt erzeugen und vorbereiten
+        run: |
+          npm install --no-audit --no-fund
+          npx cap add ios --packagemanager SPM
+          npx cap sync ios
+          python3 ios-ci/prepare.py
+      - name: Schlüssel bereitlegen
+        env:
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/asc.p8"
+          sed "s/__TEAM_ID__/$TEAM_ID/" ios-ci/ExportOptions.plist > "$RUNNER_TEMP/ExportOptions.plist"
+      - name: Bauen
+        run: |
+          xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
+            -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Riff.xcarchive" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc.p8" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \
+            MARKETING_VERSION="${{ inputs.version }}" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+            archive
+      - name: Zu TestFlight hochladen
+        run: |
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Riff.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/out" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$RUNNER_TEMP/asc.p8" \
+            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
+            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}"
+      - name: Schlüssel löschen
+        if: always()
+        run: rm -f "$RUNNER_TEMP/asc.p8"
