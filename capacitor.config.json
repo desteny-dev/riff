@@ -1,0 +1,6 @@
+{
+  "appId": "at.desteny.riff",
+  "appName": "Riff",
+  "webDir": "www",
+  "ios": { "contentInset": "never", "backgroundColor": "#0f0d14" }
+}

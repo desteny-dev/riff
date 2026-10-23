@@ -1,0 +1,8 @@
+{
+  "name": "riff-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "iOS-Hülle (Capacitor) für die Riff-Web-App – wird in der Cloud gebaut, siehe .github/workflows/ios-testflight.yml",
+  "dependencies": { "@capacitor/core": "8.5.3", "@capacitor/ios": "8.5.3" },
+  "devDependencies": { "@capacitor/cli": "8.5.3" }
+}
