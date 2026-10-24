@@ -1,5 +1,5 @@
 # Bereitet das von Capacitor erzeugte iOS-Projekt für TestFlight vor (läuft auf dem Mac in der Cloud, nach `npx cap add ios`).
-# Mikrofon-Text, Exportregel, nur Hochformat am iPhone, Audio so, dass Musik aus anderen Apps weiterläuft,
+# Mikrofon-Text, Exportregel, nur Hochformat am iPhone, Audio so, dass Musik aus anderen Apps weiterläuft (und Vibrationen trotz Mikro spürbar sind),
 # App-Symbol, gemeinsames Build-Schema. Ändert nur Dateien in ios/.
 import plistlib, re, shutil, sys, uuid
 from pathlib import Path
@@ -25,7 +25,9 @@ if 'AVAudioSession' not in src:
     src = src.replace('// Override point for customization after application launch.',
         '// Mikro + Wiedergabe zugleich; Musik aus anderen Apps läuft weiter (Mitspielen)\n'
         '        try? AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [.mixWithOthers, .defaultToSpeaker, .allowBluetoothA2DP])\n'
-        '        try? AVAudioSession.sharedInstance().setActive(true)', 1)
+        '        try? AVAudioSession.sharedInstance().setActive(true)\n'
+        '        // Ohne das schweigt das Taptic Engine, solange das Mikro läuft (Stimmgerät: kleine Vibrationen)\n'
+        '        try? AVAudioSession.sharedInstance().setAllowHapticsAndSystemSoundsDuringRecording(true)', 1)
     assert 'AVAudioSession.sharedInstance().setCategory' in src, 'AppDelegate-Muster nicht gefunden'
     ad.write_text(src)
 
