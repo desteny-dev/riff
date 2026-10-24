@@ -1,6 +1,7 @@
 # iOS-App aus der Web-App bauen und zu TestFlight hochladen – auf einem Mac in der Cloud (GitHub Actions).
-# Start: GitHub → Actions → „iOS → TestFlight" → Run workflow. Braucht 3 Geheimnisse im Repo (Settings → Secrets → Actions):
-#   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8 (Inhalt der .p8-Datei des App-Store-Connect-API-Schlüssels, Rolle Admin)
+# Start: GitHub → Actions → „iOS → TestFlight" → Run workflow. Braucht EIN Geheimnis im Repo (Settings → Secrets → Actions):
+#   ASC_KEY_P8 = Inhalt der Datei AuthKey_6RNB25T7XM.p8 (App-Store-Connect-API-Schlüssel „GitHub Riff", Rolle Admin).
+# Schlüssel-ID, Issuer-ID und Team-ID sind keine Geheimnisse (nur Namen) – sie stehen deshalb hier offen.
 name: iOS → TestFlight
 on:
   workflow_dispatch:
@@ -9,7 +10,9 @@ on:
         description: Version, die Nutzer sehen (z. B. 1.0)
         default: '1.0'
 env:
-  TEAM_ID: __TEAM_ID__
+  TEAM_ID: 543MG4ASG3
+  ASC_KEY_ID: 6RNB25T7XM
+  ASC_ISSUER_ID: 478e16fc-4df9-4263-a74b-3c894f1c91c6
 jobs:
   testflight:
     runs-on: macos-latest
@@ -45,8 +48,8 @@ jobs:
             -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Riff.xcarchive" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/asc.p8" \
-            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
-            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}" \
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID" \
             DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic \
             MARKETING_VERSION="${{ inputs.version }}" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
             archive
@@ -56,8 +59,8 @@ jobs:
             -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/out" \
             -allowProvisioningUpdates \
             -authenticationKeyPath "$RUNNER_TEMP/asc.p8" \
-            -authenticationKeyID "${{ secrets.ASC_KEY_ID }}" \
-            -authenticationKeyIssuerID "${{ secrets.ASC_ISSUER_ID }}"
+            -authenticationKeyID "$ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
       - name: Schlüssel löschen
         if: always()
         run: rm -f "$RUNNER_TEMP/asc.p8"
