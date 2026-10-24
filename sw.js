@@ -1,5 +1,5 @@
 // Offline-Cache: zuerst aus dem Speicher (schnell, offline), im Hintergrund aktualisieren.
-const CACHE = 'riff-vmvl8h9rx';
+const CACHE = 'riff-vmvlt8gr4';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 // cache:'reload' umgeht den HTTP-Cache – sonst würde ein Update minutenlang die alte Fassung liefern
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE.map((u) => new Request(u, { cache: 'reload' }))))); self.skipWaiting(); });
