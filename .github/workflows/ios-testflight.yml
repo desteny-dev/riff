@@ -30,6 +30,7 @@ jobs:
           mkdir -p www
           cp index.html manifest.webmanifest icon-192.png icon-512.png apple-touch-icon.png www/
           cp -R sounds www/
+          if [ -d mascot ]; then cp -R mascot www/; fi
       - name: iOS-Projekt erzeugen und vorbereiten
         run: |
           npm install --no-audit --no-fund
